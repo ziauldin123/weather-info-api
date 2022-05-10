@@ -8,6 +8,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
@@ -22,6 +24,7 @@ jobs:
         if: ${{ !env.ACT }}
         uses: appleboy/ssh-action@master
         with:
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
           host: ${{ secrets.HOSTNAME }}
           username: ${{ secrets.USER_NAME }}
           password: ''
