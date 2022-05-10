@@ -1,0 +1,32 @@
+name: Django Deploy CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.HOSTNAME }}
+          REMOTE_USER: ${{ secrets.USER_NAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
+
+      - name: Deploy to server
+      # don't run locally
+        if: ${{ !env.ACT }}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOSTNAME }}
+          username: ${{ secrets.USER_NAME }}
+          password: ''
+          port: '22'
+          script: |
+            cd ${{ secrets.TARGET_DIR }}
+            docker-compose down
+            docker-compose up --build -d

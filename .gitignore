@@ -1,0 +1,14 @@
+*.code-workspace
+*.DS_Store
+*.log
+.env
+.idea
+*.save
+*.sqlite3
+.vscode
+venv
+__pycache__/
+.py[cod]
+media/
+gunicorn/
+*.secrets
